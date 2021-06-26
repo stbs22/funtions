@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+//Limpiar consola: \033[H\033[2J
+
 //Contar caracteres de Fichero abierto
 int cont_char(FILE *archivo){
     int n = 0;
@@ -52,15 +54,20 @@ int cont_filas(FILE *archivo){
 
 //Devuelve un numero con la cantidad de columnas
 int cont_col(FILE *archivo){
+
     int n_c = 0;
     char temp_fila[200];
+
     while(fgets(temp_fila,200,archivo)){
+
         char *temp;
         temp = strtok(temp_fila,",");
+
         while(temp!=NULL){
             temp = strtok(NULL,",");
             n_c++; 
         }
+        
         rewind(archivo);
         return n_c - 1;
     }
@@ -85,20 +92,26 @@ void argv_excepcion(char **argv){
 void fsavestr(char dir[],char *txt){
   FILE *archivo = fopen(dir,"w");
   for(int i = 0; i < (strlen(txt)) ; i++){
+
       if(txt[i] != 0){ // evitar espacios no asignados     
+      
           fprintf(archivo,"%c",txt[i]); //escribir caracter por caracter
+      
       }
   }
   fclose(archivo);
 }
 
 int main(int argc, char **argv){
+
     argv_excepcion(argv);
     printf("Leyendo: \n");
+    
     FILE *ar = fopen(argv[1],"r");
+
     fLecAux(ar);
+
     printf("\nColumnas: %i - Filas %i\n",cont_col(ar), cont_filas(ar) );
     printf("Caracteres: %i\n",cont_char(ar));
     return 0;
 }
-
